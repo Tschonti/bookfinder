@@ -1,0 +1,10 @@
+<mat-list>
+  <mat-card>
+    <a [routerLink]="['books', book.key.replace('/works/', '')]" mat-list-item *ngFor="let book of bookList">
+      <mat-card-header>
+        <mat-card-title>{{book.title}}</mat-card-title>
+        <mat-card-subtitle>{{book.author_name.join(', ')}}</mat-card-subtitle>
+      </mat-card-header>
+    </a>
+  </mat-card>
+</mat-list>
