@@ -1,4 +1,4 @@
-import {BookPreview} from "./book.type";
+import {BookPreview} from "./book";
 
 export interface SearchRes {
   numFound: number

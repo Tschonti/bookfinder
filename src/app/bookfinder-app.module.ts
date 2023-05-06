@@ -8,6 +8,14 @@ import {OpenLibraryService} from "./services/open-library.service";
 import { BookdetailsComponent } from './components/bookdetails/bookdetails.component';
 import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {FormsModule} from "@angular/forms";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 
 const routes: Routes = [{
   path: '', component: BooklistComponent
@@ -24,7 +32,14 @@ const routes: Routes = [{
     HttpClientModule,
     RouterModule.forRoot(routes),
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule,
+    MatInputModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule
   ],
   providers: [OpenLibraryService],
   bootstrap: [BookfinderAppComponent]

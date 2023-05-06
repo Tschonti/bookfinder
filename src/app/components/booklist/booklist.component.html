@@ -1,9 +1,26 @@
+<mat-form-field appearance="fill">
+  <mat-label>Search by</mat-label>
+  <mat-select [(ngModel)]="type" (ngModelChange)="onSearchChange()">
+    <mat-option *ngFor="let t of types" [value]="t.value">
+      {{t.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="example-form-field">
+  <mat-label>Search</mat-label>
+  <input matInput type="text" [(ngModel)]="search" (ngModelChange)="onSearchChange()">
+  <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search='';onSearchChange()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<p *ngIf="!search">Start typing to see results!</p>
+
 <mat-list>
   <mat-card>
     <a [routerLink]="['books', book.key.replace('/works/', '')]" mat-list-item *ngFor="let book of bookList">
       <mat-card-header>
         <mat-card-title>{{book.title}}</mat-card-title>
-        <mat-card-subtitle>{{book.author_name.join(', ')}}</mat-card-subtitle>
+        <mat-card-subtitle>{{book.author_name?.join(', ')}}</mat-card-subtitle>
       </mat-card-header>
     </a>
   </mat-card>
