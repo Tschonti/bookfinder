@@ -10,14 +10,8 @@ export class OpenLibraryService {
   constructor(private http: HttpClient) { }
 
   searchBooks(type: SearchType, q: string, limit?: number) {
-    console.log(type)
-    let url
-    url = new URL('search.json', this.baseUrl)
-    if (type === SearchType.TITLE) {
-      url.searchParams.append('title', q)
-    } else {
-      url.searchParams.append('author', q)
-    }
+    const url = new URL('search.json', this.baseUrl)
+    url.searchParams.append(type === SearchType.TITLE ? 'title' : 'author', q)
     if (limit) {
       url.searchParams.append('limit', String(limit))
     }

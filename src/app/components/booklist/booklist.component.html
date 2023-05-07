@@ -8,7 +8,7 @@
 </mat-form-field>
 <mat-form-field class="example-form-field">
   <mat-label>Search</mat-label>
-  <input matInput type="text" [(ngModel)]="search" (ngModelChange)="onSearchChange()">
+  <input matInput type="text" [(ngModel)]="search" (ngModelChange)="this.searchUpdate.next($event)">
   <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search='';onSearchChange()">
     <mat-icon>close</mat-icon>
   </button>
@@ -25,3 +25,6 @@
     </a>
   </mat-card>
 </mat-list>
+<p *ngIf="bookList.length === 0 && search && !loading">No results!</p>
+<p *ngIf="loading">Loading...</p>
+
