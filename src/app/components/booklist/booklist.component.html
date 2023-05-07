@@ -1,30 +1,35 @@
-<mat-form-field appearance="fill">
-  <mat-label>Search by</mat-label>
-  <mat-select [(ngModel)]="type" (ngModelChange)="onSearchChange()">
-    <mat-option *ngFor="let t of types" [value]="t.value">
-      {{t.name}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field class="example-form-field">
-  <mat-label>Search</mat-label>
-  <input matInput type="text" [(ngModel)]="search" (ngModelChange)="this.searchUpdate.next($event)">
-  <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search='';onSearchChange()">
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field>
+<h1>Search books</h1>
+<div class="flex-row justify-content-start">
+  <mat-form-field appearance="fill" class="ms-3">
+    <mat-label>Search by</mat-label>
+    <mat-select [(ngModel)]="type" (ngModelChange)="onSearchChange()">
+      <mat-option *ngFor="let t of types" [value]="t.value">
+        {{t.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="ms-3">
+    <mat-label>Search</mat-label>
+    <input matInput type="text" [(ngModel)]="search" (ngModelChange)="this.searchUpdate.next($event)">
+    <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search='';bookList=[];onSearchChange()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
 <p *ngIf="!search">Start typing to see results!</p>
 
-<mat-list>
-  <mat-card>
-    <a [routerLink]="['books', book.key.replace('/works/', '')]" mat-list-item *ngFor="let book of bookList">
-      <mat-card-header>
-        <mat-card-title>{{book.title}}</mat-card-title>
-        <mat-card-subtitle>{{book.author_name?.join(', ')}}</mat-card-subtitle>
+  <a class="book-link" [routerLink]="['books', book.isbn[0]]" mat-list-item *ngFor="let book of bookList">
+    <mat-card class="book-card">
+      <mat-card-header class="card-header">
+        <img [alt]="book.title + ' cover'" class="book-img" *ngIf="book.cover_i" [src]="'https://covers.openlibrary.org/b/id/' + book.cover_i + '-M.jpg'" >
+        <mat-card-title-group>
+          <mat-card-title>{{book.title}}</mat-card-title>
+          <mat-card-subtitle>{{book.author_name?.join(', ')}}</mat-card-subtitle>
+        </mat-card-title-group>
       </mat-card-header>
-    </a>
-  </mat-card>
-</mat-list>
+    </mat-card>
+  </a>
 <p *ngIf="bookList.length === 0 && search && !loading">No results!</p>
-<p *ngIf="loading">Loading...</p>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 

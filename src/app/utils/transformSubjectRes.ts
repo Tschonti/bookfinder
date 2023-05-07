@@ -5,5 +5,6 @@ export const transformSubjectRes = (b: BookFromSubjectRes): BookPreview => ({
   key: b.key,
   author_name: b.authors?.map(a => a.name),
   cover_i: b.cover_id,
-  first_publish_year: b.first_publish_year
+  first_publish_year: b.first_publish_year,
+  isbn: [b.availability?.isbn]
 })

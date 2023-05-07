@@ -1,2 +1,21 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand ms-3" href="/">Bookfinder</a>
+  <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<router-outlet></router-outlet>
+  <div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ms-3">
+        <a class="nav-link" [routerLink]="'/'">Books</a>
+      </li>
+      <li class="nav-item ms-3">
+        <a class="nav-link" [routerLink]="'/favourites'">Favourites</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container pt-3">
+  <router-outlet></router-outlet>
+</div>

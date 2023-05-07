@@ -1,0 +1,14 @@
+<h1>Your favourite books</h1>
+
+<a class="book-link" [routerLink]="['/books', book.isbn]" mat-list-item *ngFor="let book of booklist">
+  <mat-card class="book-card">
+    <mat-card-header class="card-header">
+      <img [alt]="book.title + ' cover'" class="book-img" *ngIf="book.cover" [src]="book.cover.medium" >
+      <mat-card-title-group>
+        <mat-card-title>{{book.title}}</mat-card-title>
+        <mat-card-subtitle>{{book.authors}}</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+  </mat-card>
+</a>
+<p *ngIf="booklist.length === 0" >No favourite books yet!</p>

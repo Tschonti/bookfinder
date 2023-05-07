@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class BookfinderAppComponent {
   title = 'bookfinder';
+  navbarOpen = false
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
 }
