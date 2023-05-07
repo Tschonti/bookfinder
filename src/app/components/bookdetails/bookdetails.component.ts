@@ -12,7 +12,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class BookdetailsComponent implements OnInit {
   constructor(private openLibraryService: OpenLibraryService,
               private route: ActivatedRoute, private _snackBar: MatSnackBar) {}
+  isbn = ''
+  book: BookDetails | undefined
+  favourite: boolean = false
+  favourites: BookDetails[] = []
+  loading = true
 
+  /**
+   * Gets the data of the book identified by the ISBN in the URL and only keeps the first five subjects.
+   * Gets the favourite book list from localStorage, and decides whether this book is in it.
+   */
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.isbn = params["isbn"];
@@ -27,13 +36,10 @@ export class BookdetailsComponent implements OnInit {
     })
   }
 
-  isbn = ''
-  book: BookDetails | undefined
-  favourite: boolean = false
-  favourites: BookDetails[] = []
-  loading = true
-
-
+  /**
+   * Toggles whether this book is the favourites list. Changes the local variable and updates the array stored in localStorage.
+   * Sends a snack message as feedback of the change.
+   */
   toggleFavourite() {
     if (this.book) {
       this.favourite = !this.favourite

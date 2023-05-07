@@ -17,11 +17,20 @@ interface SearchTypeForForm {
   styleUrls: ['./booklist.component.css']
 })
 export class BooklistComponent implements OnInit {
-  constructor(
-    private openLibraryService: OpenLibraryService, private route: ActivatedRoute) {
+  constructor(private openLibraryService: OpenLibraryService, private route: ActivatedRoute) {
     this.searchUpdate.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => this.onSearchChange())
   }
 
+  bookList: BookPreview[] = []
+  loading = false
+  search = ''
+  searchUpdate = new Subject<string>()
+  types: SearchTypeForForm[] = [{value: 'title', name: "Title",}, {value: 'author', name: "Author"}, {value: 'subject', name: "Subject"}]
+  type = SearchType.TITLE
+
+  /**
+   * If there are query params in the url, starts a request to get the requested data and sets the local variables.
+   */
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
           if (params['q']) {
@@ -34,19 +43,21 @@ export class BooklistComponent implements OnInit {
       })
   }
 
-  bookList: BookPreview[] = []
-  loading = false
-  search = ''
-  searchUpdate = new Subject<string>()
-  types: SearchTypeForForm[] = [{value: 'title', name: "Title",}, {value: 'author', name: "Author"}, {value: 'subject', name: "Subject"}]
-  type = SearchType.TITLE
-
+  /**
+   * Function called by the input field on change. If the input isn't empty, start a request to get the data.
+   */
   onSearchChange() {
     if (this.search) {
       this.getBooks(this.type, this.search, 20)
     }
   }
 
+  /**
+   * Calls a method of OpenLibraryService to get the list of books from the API. Subscribes to the results and sets the variables when they arrive.
+   * @param type What criteria to search by
+   * @param q Search term
+   * @param limit Maximum how many records should be returned
+   */
   getBooks(type: SearchType, q: string, limit?: number) {
     this.loading = true
     if (type === SearchType.SUBJECT) {

@@ -9,6 +9,9 @@ export class BookfinderAppComponent {
   title = 'bookfinder';
   navbarOpen = false
 
+  /**
+   * Toggles the state of the navbar (on mobile), so closes or opens it.
+   */
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
   }

@@ -10,6 +10,9 @@ import {Location} from '@angular/common';
 export class CoverComponent implements OnInit {
   constructor(private route: ActivatedRoute, private _location: Location) {}
 
+  /**
+   * Saves the coverId route parameter as a local variable
+   */
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.coverId = params["coverId"];
@@ -17,6 +20,9 @@ export class CoverComponent implements OnInit {
   }
   coverId = ''
 
+  /**
+   * Navigates to the previous page.
+   */
   backPressed() {
     this._location.back()
   }

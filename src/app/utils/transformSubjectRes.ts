@@ -1,5 +1,9 @@
 import {BookFromSubjectRes, BookPreview} from "../models/book";
 
+/**
+ * The response from the subject and search APIs are a bit different, this helper function transforms an instance of BookFromSubjectRes to an instance of BookPreview
+ * @param b Result from the Subject API
+ */
 export const transformSubjectRes = (b: BookFromSubjectRes): BookPreview => ({
   title: b.title,
   key: b.key,
