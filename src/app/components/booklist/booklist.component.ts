@@ -17,6 +17,14 @@ interface SearchTypeForForm {
   styleUrls: ['./booklist.component.css']
 })
 export class BooklistComponent implements OnInit {
+
+  /**
+   * We don't want to send a request to OpenLibrary on every letter the user types, so we use debounce.
+   * If the user hasn't typed anything in the past 400 ms and the search value has changed, then we send the request.
+   * This is implemented with rxjs' debounceTime and distinctUntilChanged piped onto the input change event.
+   * @param openLibraryService  Service to send http request to OpenLibrary
+   * @param route Service to navigate through the app.
+   */
   constructor(private openLibraryService: OpenLibraryService, private route: ActivatedRoute) {
     this.searchUpdate.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => this.onSearchChange())
   }
@@ -44,7 +52,7 @@ export class BooklistComponent implements OnInit {
   }
 
   /**
-   * Function called by the input field on change. If the input isn't empty, start a request to get the data.
+   * Function called by the input field on change. If the input isn't empty, starts a request to get the data.
    */
   onSearchChange() {
     if (this.search) {

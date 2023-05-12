@@ -10,6 +10,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./bookdetails.component.css']
 })
 export class BookdetailsComponent implements OnInit {
+  /**
+   * Constructor parameters for Dependency Injection
+   * @param openLibraryService Service to send http request to OpenLibrary
+   * @param route Service to navigate through the app.
+   * @param _snackBar Service to show notifications as feedback for the user's actions
+   */
   constructor(private openLibraryService: OpenLibraryService,
               private route: ActivatedRoute, private _snackBar: MatSnackBar) {}
   isbn = ''
@@ -37,7 +43,7 @@ export class BookdetailsComponent implements OnInit {
   }
 
   /**
-   * Toggles whether this book is the favourites list. Changes the local variable and updates the array stored in localStorage.
+   * Toggles whether this book is in the favourites list. Changes the local variable and updates the array stored in localStorage.
    * Sends a snack message as feedback of the change.
    */
   toggleFavourite() {
