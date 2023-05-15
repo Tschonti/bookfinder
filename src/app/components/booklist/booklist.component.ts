@@ -5,6 +5,7 @@ import {SearchType} from "../../models/searchType";
 import {transformSubjectRes} from "../../utils/transformSubjectRes";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 interface SearchTypeForForm {
   value: string
@@ -24,8 +25,9 @@ export class BooklistComponent implements OnInit {
    * This is implemented with rxjs' debounceTime and distinctUntilChanged piped onto the input change event.
    * @param openLibraryService  Service to send http request to OpenLibrary
    * @param route Service to navigate through the app.
+   * @param _snackBar Service to show notifications as feedback for the user's actions
    */
-  constructor(private openLibraryService: OpenLibraryService, private route: ActivatedRoute) {
+  constructor(private openLibraryService: OpenLibraryService, private route: ActivatedRoute, private _snackBar: MatSnackBar) {
     this.searchUpdate.pipe(debounceTime(400), distinctUntilChanged()).subscribe(() => this.onSearchChange())
   }
 
@@ -69,15 +71,29 @@ export class BooklistComponent implements OnInit {
   getBooks(type: SearchType, q: string, limit?: number) {
     this.loading = true
     if (type === SearchType.SUBJECT) {
-      this.openLibraryService.searchBooksBySubject(q, limit).subscribe(data => {
+      this.openLibraryService.searchBooksBySubject(q, limit).subscribe({next: data =>
+      {
         this.bookList = data.works.map(transformSubjectRes).filter(b => b.isbn[0])
         this.loading = false
-      })
+      }, error: err => {
+        console.error(err)
+        this._snackBar.open('Error querying books')
+        this.bookList = []
+          this.loading = false
+      }
+    })
     } else {
-      this.openLibraryService.searchBooks(type, q, limit).subscribe(data => {
+      this.openLibraryService.searchBooks(type, q, limit).subscribe({next: data =>
+      {
         this.bookList = data.docs.filter(b => b.isbn?.length > 0)
         this.loading = false
-      })
+      }, error: err => {
+          console.error(err)
+          this._snackBar.open('Error querying books')
+          this.bookList = []
+          this.loading = false
+        }
+    })
     }
   }
 

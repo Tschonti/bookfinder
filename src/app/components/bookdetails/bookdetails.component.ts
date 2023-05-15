@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BookDetails} from "../../models/book";
 import {OpenLibraryService} from "../../services/open-library.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -15,9 +15,10 @@ export class BookdetailsComponent implements OnInit {
    * @param openLibraryService Service to send http request to OpenLibrary
    * @param route Service to navigate through the app.
    * @param _snackBar Service to show notifications as feedback for the user's actions
+   * @param _router Service to navigate to different pages
    */
   constructor(private openLibraryService: OpenLibraryService,
-              private route: ActivatedRoute, private _snackBar: MatSnackBar) {}
+              private route: ActivatedRoute, private _snackBar: MatSnackBar, private _router: Router) {}
   isbn = ''
   book: BookDetails | undefined
   favourite: boolean = false
@@ -31,13 +32,20 @@ export class BookdetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.isbn = params["isbn"];
-      this.openLibraryService.getBook(this.isbn).subscribe(data => {
-        // @ts-ignore
-        const {subjects, ...book}: BookDetails = data[`ISBN:${this.isbn}`]
-        this.book = {...book, subjects: subjects.filter((_s, i) => i < 5)}
-        this.favourites = JSON.parse(localStorage.getItem('favs') || '[]')
-        this.favourite = this.favourites.some(b => b.key === this.book?.key)
-        this.loading = false
+      this.openLibraryService.getBook(this.isbn).subscribe({
+        next: data => {
+          // @ts-ignore
+          const {subjects, ...book}: BookDetails = data[`ISBN:${this.isbn}`]
+          this.book = {...book, subjects: subjects.filter((_s, i) => i < 5)}
+          this.favourites = JSON.parse(localStorage.getItem('favs') || '[]')
+          this.favourite = this.favourites.some(b => b.key === this.book?.key)
+          this.loading = false
+        },
+        error: err => {
+          this._snackBar.open('Error querying book')
+          console.error(err)
+          this._router.navigateByUrl('/')
+        }
       })
     })
   }
